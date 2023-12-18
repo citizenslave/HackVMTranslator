@@ -1,0 +1,20 @@
+// lt
+    {pop D}
+    {pop A}
+
+    D=A-D
+    @gt
+    D;JGT
+
+(ngt)
+    D=0
+    {push D}
+    @end
+    0;JMP
+
+(gt)
+    D=-1
+    {push D}
+
+(end)
+// end lt

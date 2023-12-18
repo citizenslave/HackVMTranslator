@@ -1,0 +1,7 @@
+// not
+    {pop D}
+
+    D=!D
+
+    {push D}
+// end not

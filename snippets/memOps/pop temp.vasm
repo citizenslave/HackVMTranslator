@@ -1,0 +1,6 @@
+// pop temp [(reference-5)]
+    {pop D}
+
+    @reference
+    M=D
+// end pop temp [(reference-5)]

@@ -1,0 +1,8 @@
+// or
+    {pop D}
+    {pop A}
+
+    D=D|A
+
+    {push D}
+// end or

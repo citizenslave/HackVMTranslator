@@ -1,0 +1,5 @@
+// push pointer [id]
+    @id
+    D=M
+    {push D}
+// end push pointer [id]

@@ -1,0 +1,13 @@
+// pop [segment] [index]
+    @segment
+    D=M
+    @index
+    D=D+A
+    @R13
+    M=D
+    {pop D}
+
+    @R13
+    A=M
+    M=D
+// end pop [segment] [index]

@@ -1,0 +1,8 @@
+// and
+    {pop D}
+    {pop A}
+
+    D=D&A
+
+    {push D}
+// end and

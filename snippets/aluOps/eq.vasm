@@ -1,0 +1,20 @@
+// eq
+    {pop D}
+    {pop A}
+
+    D=D-A
+    @eq
+    D;JEQ
+
+(neq)
+    D=0
+    {push D}
+    @end
+    0;JMP
+
+(eq)
+    D=-1
+    {push D}
+
+(end)
+// end eq
