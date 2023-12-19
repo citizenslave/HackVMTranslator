@@ -6,10 +6,11 @@ if (process.argv.length < 3) { console.error("No file provided.  Quitting."); pr
 
 let filename = process.argv[2];
 
-const translatedFiles = [ new VMTranslator().inflateSnippet('@256\nD=A\n@SP\nM=D\n{call Sys.init 0}', false) ];
-// const translatedFiles = [];
-
+const bootstrapTranslator = new VMTranslator();
+const bootstrapSnippet = bootstrapTranslator.loadSnippet('bootstrap');
 let hasSysInit = false;
+
+const translatedFiles = [ new VMTranslator().inflateSnippet(bootstrapSnippet, false) ];
 
 if (lstatSync(filename).isDirectory()) {
   const files = readdirSync(filename, { recursive: true }) as string[];
@@ -28,8 +29,7 @@ if (lstatSync(filename).isDirectory()) {
   translatedFiles.push(translatedFile);
 
   const nameParts = filename.split('.');
-  if (nameParts.length === 1 || nameParts[nameParts.length - 1] !== 'vm') nameParts.push('');
-  
+  if (nameParts.length === 1 || nameParts[nameParts.length - 1] !== 'vm') nameParts.push('');  
   nameParts[nameParts.length - 1] = 'asm';
   filename = nameParts.join('.');
 } else { console.error ("File/Folder not found.  Quitting."); process.exit(); }

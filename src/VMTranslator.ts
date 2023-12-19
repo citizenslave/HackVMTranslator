@@ -49,7 +49,34 @@ export class VMTranslator {
     const initLocalsParams = initLocalsPattern.exec(line);
     const callRetParams = callRetPattern.exec(line);
 
-    if (memOpParams) {
+    if (retPattern.test(line)) {
+      return this.inflateSnippet(this.loadSnippet('funcOps' + path.sep + 'return'));
+    } else if (flowParams) {
+      const cmd = flowParams[1].trim();
+      const label = flowParams[2].trim();
+      const flowSnippet = this.loadSnippet('flowOps' + path.sep + cmd);
+      return this.inflateSnippet(flowSnippet.replace(/(@|\(|\[)label/g, `$1${this.filename}$${label}`), false);
+    } else if (funcParams) {
+      const cmd = funcParams[1].trim();
+      const funcName = funcParams[2].trim(); 
+      const num = funcParams[3].trim();
+      const funcSnippet = this.loadSnippet('funcOps' + path.sep + cmd);
+      return this.inflateSnippet(funcSnippet.replace(/funcName/g, `${funcName}`).replace(/nVar|nArg/g, num), false);
+    } else if (initLocalsParams) {
+      const initLocalSnippets = [];
+      const localCount = Number(initLocalsParams[1]);
+      const localsSnippet = this.loadSnippet('funcOps' + path.sep + 'initLocal');
+      for (let index = 0; index < localCount; index++) {
+        initLocalSnippets.push(this.inflateSnippet(localsSnippet.replace(/index/g, index.toString())));
+      }
+      if (!initLocalSnippets.length) initLocalSnippets.push('\t\t// no locals declared\n');
+      return initLocalSnippets.join('\n');
+    } else if (callRetParams) {
+      if (callRetParams[1] === 'push')
+        return this.inflateSnippet(`\t@${this.filename ? this.filename + '$' : ''}${callRetParams[2]}$ret.${this.callIndex}\n\tD=A\n\t{push D}`);
+      else
+        return this.inflateSnippet(`\t(${this.filename ? this.filename + '$' : ''}${callRetParams[2]}$ret.${this.callIndex++})`);
+    } else if (memOpParams) {
       const memOp = 'memOps' + path.sep + memOpParams[1].trim();
       const segment = memOpParams[2].trim();
       const index = memOpParams[3]?.trim();
@@ -80,31 +107,6 @@ export class VMTranslator {
           const memSnippet = this.loadSnippet(`${memOp} segment`);
           return this.inflateSnippet(memSnippet.replace(/index/g, index).replace(/segment/g, segmentPtr));
       }
-    } else if (flowParams) {
-      const cmd = flowParams[1].trim();
-      const label = flowParams[2].trim();
-      const flowSnippet = this.loadSnippet('flowOps' + path.sep + cmd);
-      return this.inflateSnippet(flowSnippet.replace(/(@|\(|\[)label/g, `$1${this.filename}$${label}`), false);
-    } else if (retPattern.test(line)) {
-      return this.inflateSnippet(this.loadSnippet('funcOps' + path.sep + 'return'));
-    } else if (funcParams) {
-      const cmd = funcParams[1].trim();
-      const funcName = funcParams[2].trim();
-      const num = funcParams[3].trim();
-      const funcSnippet = this.loadSnippet('funcOps' + path.sep + cmd);
-      return this.inflateSnippet(funcSnippet.replace(/funcName/g, `${funcName}`).replace(/nVar|nArg/g, num), false);
-    } else if (initLocalsParams) {
-      const initLocalsSnippet = [];
-      const localCount = Number(initLocalsParams[1]);
-      const localsSnippet = this.loadSnippet('funcOps' + path.sep + 'initLocal');
-      for (let index = 0; index < localCount; index++) {
-        initLocalsSnippet.push(this.inflateSnippet(localsSnippet.replace(/index/g, index.toString())));
-      }
-      if (!initLocalsSnippet.length) initLocalsSnippet.push('\t\t// no locals declared\n');
-      return initLocalsSnippet.join('\n');
-    } else if (callRetParams) {
-      if (callRetParams[1] === 'push') return this.inflateSnippet(`\t@${this.filename ? this.filename + '$' : ''}${callRetParams[2]}$ret.${this.callIndex}\n\tD=A\n\t{push D}`);
-      return this.inflateSnippet(`\t(${this.filename ? this.filename + '$' : ''}${callRetParams[2]}$ret.${this.callIndex++})`);
     } else {
       return this.inflateSnippet(this.loadSnippet('aluOps' + path.sep + line));
     }
