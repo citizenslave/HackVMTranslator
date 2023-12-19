@@ -1,6 +1,6 @@
-// push static [reference]
-    @reference
-    D=M
+    // push static [reference]
+        @reference
+        D=M
 
-    {push D}
-// end push static [reference]
+        {push D}
+        // end push static [reference]

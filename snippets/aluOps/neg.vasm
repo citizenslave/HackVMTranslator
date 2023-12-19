@@ -1,7 +1,7 @@
-// neg
-    {pop D}
+    // neg
+        {pop D}
 
-    D=-D
+        D=-D
 
-    {push D}
-// end neg
+        {push D}
+        // end neg

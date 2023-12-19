@@ -1,0 +1,5 @@
+    // if-goto [label]
+        {pop D}
+        @label
+        D; JNE
+        // end if-goto [label]

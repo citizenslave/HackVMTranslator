@@ -1,0 +1,3 @@
+    // initLocal [index]
+        {push constant 0}
+        // end initLocal [index]

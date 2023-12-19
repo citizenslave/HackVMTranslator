@@ -1,6 +1,6 @@
-// pop static [reference]
-    {pop D}
+    // pop static [reference]
+        {pop D}
 
-    @reference
-    M=D
-// end pop static [reference]
+        @reference
+        M=D
+        // end pop static [reference]

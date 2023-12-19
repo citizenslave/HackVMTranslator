@@ -1,6 +1,6 @@
-// pop A
-    @SP
-    M=M-1
-    A=M
-    A=M
-// end pop A
+    // pop A
+        @SP
+        M=M-1
+        A=M
+        A=M
+        // end pop A

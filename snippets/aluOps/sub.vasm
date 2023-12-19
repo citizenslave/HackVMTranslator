@@ -1,6 +1,6 @@
-// sub
-    {pop D}
-    {pop A}
-    D=A-D
-    {push D}
-// end sub
+    // sub
+        {pop D}
+        {pop A}
+        D=A-D
+        {push D}
+        // end sub

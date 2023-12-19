@@ -1,0 +1,38 @@
+    // call [funcName] [nArg]
+        {callRet push funcName}
+        
+        @LCL
+        D=M
+        {push D}
+
+        @ARG
+        D=M
+        {push D}
+
+        @THIS
+        D=M
+        {push D}
+
+        @THAT
+        D=M
+        {push D}
+
+        // LCL = SP
+        @SP
+        D=M
+        @LCL
+        M=D
+
+        // ARG = SP - 5 - nArg
+        @5
+        D=D-A
+        @nArg
+        D=D-A
+        @ARG
+        M=D
+
+        @funcName
+        0;JMP
+
+    {callRet retAddr funcName}
+        // end call [funcName] [nArg]

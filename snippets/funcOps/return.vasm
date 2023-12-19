@@ -1,0 +1,63 @@
+    // return
+        
+        // startframe = LCL-5
+        @LCL
+        D=M
+        @5
+        D=D-A
+        @R15
+        M=D
+
+        // retAddr = *startFrame (+0)
+        @R15
+        A=M
+        D=M
+        @R14
+        M=D
+
+        // *arg = pop()
+        {pop argument 0}
+
+        // SP = ARG+1
+        @ARG
+        D=M+1
+        @SP
+        M=D
+
+        // LCL = *(++startFrame) (+1)
+        @R15
+        D=M+1
+        AM=D
+        D=M
+        @LCL
+        M=D
+
+        // ARG = *(++startFrame) (+2)
+        @R15
+        D=M+1
+        AM=D
+        D=M
+        @ARG
+        M=D
+
+        // THIS = *(++startFrame) (+3)
+        @R15
+        D=M+1
+        AM=D
+        D=M
+        @THIS
+        M=D
+
+        // THAT = *(++startFrame) (+4)
+        @R15
+        D=M+1
+        AM=D
+        D=M
+        @THAT
+        M=D
+        
+        // GOTO retAddr
+        @R14
+        A=M
+        0; JMP
+        // end return

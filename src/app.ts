@@ -1,18 +1,44 @@
-import fs from 'fs';
+import { lstatSync, readdirSync, writeFileSync } from 'fs';
+import path from 'path';
 import { VMTranslator } from './VMTranslator';
 
 if (process.argv.length < 3) { console.error("No file provided.  Quitting."); process.exit(); }
 
-const filename = process.argv[2];
+let filename = process.argv[2];
 
-if (!fs.existsSync(filename)) { console.error ("File not found.  Quitting."); process.exit(); }
+const translatedFiles = [ new VMTranslator().inflateSnippet('@256\nD=A\n@SP\nM=D\n{call Sys.init 0}', false) ];
+// const translatedFiles = [];
 
-const translatedFile = new VMTranslator(filename).translate();
+let hasSysInit = false;
 
-const nameParts = filename.split('.');
-nameParts[nameParts.length - 1] = 'asm';
-const outputName = nameParts.join('.');
+if (lstatSync(filename).isDirectory()) {
+  const files = readdirSync(filename, { recursive: true }) as string[];
 
-fs.writeFileSync(outputName, translatedFile);
+  files.filter(f => (f.split('.').pop() === 'vm')).forEach(file => {
+    const translatedFile = new VMTranslator(path.join(filename, file)).translate();
+    if (translatedFile.includes('(Sys.init)')) hasSysInit = true;
+    translatedFiles.push(translatedFile);
+  });
 
-console.log(`Translated Assembly Code Written to:\n${outputName}`);
+  if (filename.endsWith(path.sep)) filename = filename.slice(0, -1);
+  filename += path.sep + filename.split(path.sep).pop() + '.asm';
+} else if (lstatSync(filename).isFile()) {
+  const translatedFile = new VMTranslator(filename).translate();
+  if (translatedFile.includes('(Sys.init)')) hasSysInit = true;
+  translatedFiles.push(translatedFile);
+
+  const nameParts = filename.split('.');
+  if (nameParts.length === 1 || nameParts[nameParts.length - 1] !== 'vm') nameParts.push('');
+  
+  nameParts[nameParts.length - 1] = 'asm';
+  filename = nameParts.join('.');
+} else { console.error ("File/Folder not found.  Quitting."); process.exit(); }
+
+if (!hasSysInit) {
+  console.log('Sys.init not found, assuming test framework.');
+  translatedFiles.shift();
+}
+
+writeFileSync(filename, translatedFiles.join('\n\n\n'));
+
+console.log(`Translated Assembly Code Written to:\n${filename}`);

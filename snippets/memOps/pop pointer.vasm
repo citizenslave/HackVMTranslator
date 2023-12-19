@@ -1,5 +1,5 @@
-// pop pointer [id]
-    {pop D}
-    @id
-    M=D
-// end pop pointer [id]
+    // pop pointer [id]
+        {pop D}
+        @id
+        M=D
+        // end pop pointer [id]

@@ -1,6 +1,6 @@
-// push constant [value]
-    @value
-    D=A
+    // push constant [value]
+        @value
+        D=A
 
-    {push D}
-// end push constant [value]
+        {push D}
+        // end push constant [value]

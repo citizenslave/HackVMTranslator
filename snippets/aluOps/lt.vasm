@@ -1,20 +1,20 @@
-// lt
-    {pop D}
-    {pop A}
+    // lt
+        {pop D}
+        {pop A}
 
-    D=A-D
-    @lt
-    D;JLT
+        D=A-D
+        @lt
+        D;JLT
 
-(nlt)
-    D=0
-    {push D}
-    @end
-    0;JMP
+    (nlt)
+        D=0
+        {push D}
+        @end
+        0;JMP
 
-(lt)
-    D=-1
-    {push D}
+    (lt)
+        D=-1
+        {push D}
 
-(end)
-// end lt
+    (end)
+        // end lt

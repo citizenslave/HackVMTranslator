@@ -1,0 +1,4 @@
+    // function [funcName] [nVar]
+    (funcName)
+        {initLocals nVar}
+        // end function [funcName] [nVar]

@@ -1,6 +1,6 @@
-// push temp [(reference-5)]
-    @reference
-    D=M
+    // push temp [(reference-5)]
+        @reference
+        D=M
 
-    {push D}
-// end push temp [(reference-5)]
+        {push D}
+        // end push temp [(reference-5)]

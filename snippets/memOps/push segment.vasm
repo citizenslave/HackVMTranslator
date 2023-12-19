@@ -1,9 +1,9 @@
-// push [segment] [index]
-    @segment
-    D=M
-    @index
-    A=D+A
-    D=M
+    // push [segment] [index]
+        @segment
+        D=M
+        @index
+        A=D+A
+        D=M
 
-    {push D}
-// end push [segment] [index]
+        {push D}
+        // end push [segment] [index]
